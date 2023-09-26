@@ -16,3 +16,17 @@ spec:
           input.review.operation == "DELETE"
           msg := sprintf("Deletion of the namespace %v is not allowed.", [input.review.object.metadata.name])
         }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredNamespace
+metadata:
+  name: deny-namespace-deletion
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Namespace"]
+  parameters:
+    rules:
+    - operations: ["DELETE"]
